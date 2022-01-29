@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+package posts;
+
+option go_package = "queue-api/intenral/controller/grpc/proto";
+
+// Posts service.
+service Posts {
+    // Consumes events about new posts.
+    rpc Consume (Empty) returns (stream Post) {}
+}
+  
+// Empty is empty message. Nothing.
+message Empty {}
+
+// Post is message with new post event's data.
+message Post {
+    string title = 1;
+    google.protobuf.Timestamp date = 2;
+    string author = 3;
+    string summary = 4;
+    string url = 5;
+}

@@ -1,0 +1,1 @@
+sudo docker build -t gbu-queue-api -f deployments/Dockerfile .
