@@ -15,6 +15,8 @@ import (
 	"github.com/pkg/errors"
 )
 
+// Run runs app. If returned error is not nil, program exited
+// unexpectedly and non-zero code should be returned (os.Exit(1) or log.Fatal(...)).
 func Run(ctx context.Context, log logger.Logger) error {
 	log.Info("starting app")
 
