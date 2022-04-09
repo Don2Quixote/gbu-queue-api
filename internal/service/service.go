@@ -49,7 +49,7 @@ func (s *Service) Launch(ctx context.Context) error {
 
 	posts, err := s.posts.Consume(ctx)
 	if err != nil {
-		return errors.WithMessage(err, "can't consume")
+		return errors.Wrap(err, "consume posts")
 	}
 
 	wg := &sync.WaitGroup{}
@@ -89,7 +89,7 @@ func (s *Service) Launch(ctx context.Context) error {
 	wg.Wait()
 
 	if ctrlErr.Load() != nil {
-		return errors.Wrap(ctrlErr.Load(), "can't launch one of controllers")
+		return errors.Wrap(ctrlErr.Load(), "launch one of controllers")
 	}
 
 	return nil

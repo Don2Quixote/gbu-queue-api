@@ -59,7 +59,7 @@ func (c *Controller) Launch(ctx context.Context) error {
 
 	lis, err := net.Listen("tcp", fmt.Sprintf(":%d", c.port))
 	if err != nil {
-		return errors.Wrapf(err, "can't listen port %d", c.port)
+		return errors.Wrapf(err, "listen port %d", c.port)
 	}
 	defer lis.Close()
 
@@ -82,7 +82,7 @@ func (c *Controller) Launch(ctx context.Context) error {
 	serve := func() {
 		err = server.Serve(lis)
 		if err != nil {
-			shutdown <- errors.Wrap(err, "can't serve")
+			shutdown <- errors.Wrap(err, "serve")
 		}
 	}
 	go serve()

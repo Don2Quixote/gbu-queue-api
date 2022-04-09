@@ -23,7 +23,7 @@ func Run(ctx context.Context, log logger.Logger) error {
 	var cfg appConfig
 	err := config.Parse(&cfg)
 	if err != nil {
-		return errors.Wrap(err, "can't parse config")
+		return errors.Wrap(err, "parse config")
 	}
 
 	posts := posts.New(posts.RabbitConfig{
@@ -37,7 +37,7 @@ func Run(ctx context.Context, log logger.Logger) error {
 
 	err = posts.Init(ctx, ctx)
 	if err != nil {
-		return errors.Wrap(err, "can't init posts")
+		return errors.Wrap(err, "init posts")
 	}
 
 	wsCtrl := websocket.New(cfg.WebsocketPort, log)
@@ -47,7 +47,7 @@ func Run(ctx context.Context, log logger.Logger) error {
 
 	err = service.Launch(ctx)
 	if err != nil {
-		return errors.Wrap(err, "can't launch service")
+		return errors.Wrap(err, "launch service")
 	}
 
 	log.Info("app finished")

@@ -17,7 +17,7 @@ func (c *Controller) Consume(e *proto.Empty, stream proto.Posts_ConsumeServer) e
 	// posts chan will be closed once request's context will be done.
 	posts, err := c.methods.consume(stream.Context())
 	if err != nil {
-		return errors.Wrap(err, "can't consume")
+		return errors.Wrap(err, "consume")
 	}
 
 	// Send each new post to the client.

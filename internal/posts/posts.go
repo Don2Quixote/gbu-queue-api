@@ -53,22 +53,22 @@ func (p *Posts) Init(ctx, processCtx context.Context) error {
 
 	conn, err := rabbit.Dial(cfg.Host, cfg.User, cfg.Pass, cfg.Vhost, cfg.Amqps)
 	if err != nil {
-		return errors.Wrap(err, "can't connect to rabbit")
+		return errors.Wrap(err, "connect to rabbit")
 	}
 
 	ch, err := conn.Channel()
 	if err != nil {
-		return errors.Wrap(err, "can't get rabbit channel")
+		return errors.Wrap(err, "get rabbit channel")
 	}
 
 	err = ch.ExchangeDeclare(postsExchange, amqp.ExchangeFanout, true, false, false, false, nil)
 	if err != nil {
-		return errors.Wrap(err, "can't declare posts exchange")
+		return errors.Wrap(err, "declare posts exchange")
 	}
 
 	queue, err := ch.QueueDeclare("", false, false, true, false, nil)
 	if err != nil {
-		return errors.Wrap(err, "can't declare exclusive queue")
+		return errors.Wrap(err, "declare exclusive queue")
 	}
 
 	p.log.Infof("declared rabbit queue %q", queue.Name)
@@ -78,7 +78,7 @@ func (p *Posts) Init(ctx, processCtx context.Context) error {
 	// Exchange is fanout so no binding key required.
 	err = ch.QueueBind(p.queueName, "", postsExchange, false, nil)
 	if err != nil {
-		return errors.Wrap(err, "can't bind exclusive queue to posts exchange")
+		return errors.Wrap(err, "bind exclusive queue to posts exchange")
 	}
 
 	errs := make(chan *amqp.Error)
@@ -146,9 +146,10 @@ func (p *Posts) Consume(ctx context.Context) (<-chan entity.Post, error) {
 
 	handleMessage := func(message amqp.Delivery) error {
 		var post entity.Post
+
 		err := json.Unmarshal(message.Body, &post)
 		if err != nil {
-			return errors.Wrapf(err, "can't decode message %q", message.Body)
+			return errors.Wrapf(err, "decode message %q", message.Body)
 		}
 
 		posts <- post

@@ -97,7 +97,7 @@ func (c *Controller) Launch(ctx context.Context) error {
 	startServer := func() {
 		err := server.ListenAndServe()
 		if err != nil && !errors.Is(err, http.ErrServerClosed) {
-			shutdown <- errors.Wrap(err, "can't start server")
+			shutdown <- errors.Wrap(err, "start server")
 		}
 	}
 	go startServer()
